@@ -612,7 +612,7 @@ class Solution {
 3. If the length is even, start matching when i = length/2-1.
 
 
-### First
+### [First Bad Version]()
 #### Answer 1:
 ```
 /* The isBadVersion API is defined in the parent class VersionControl.
@@ -641,6 +641,131 @@ public class Solution extends VersionControl {
 2. the left point can move to mid+1(because mid has already checked is good version)
 3. calculate the mid, need to be careful about exceed the integer limit(2^31). 
 
-#### 	Answer 2:
 
+
+### [Path Sum](https://leetcode.com/problems/path-sum/description/)
+#### Answer 1:
+```
+class Solution {
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if(root==null){
+          return false;  
+        }
+        if(root.right==null&&root.left==null){
+            if(root.val==sum){
+                return true;
+            }
+        }
+        boolean right = false;
+        boolean left = false;
+        if(root.right!=null){
+            right = hasPathSum(root.right, sum-root.val);
+        }
+        if(root.left!=null){
+            left = hasPathSum(root.left, sum-root.val);
+        }
+        if(!right&&!left){
+            return false;
+        }else{
+            return true;
+        }
+        
+    }
+}
+```
+#### Solution 1:
+1. DFS, find the root
+2. Hierachical return whether finding to parent node
+
+
+
+###[Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/description/)
+### Answer 1:
+```
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        return swap(head);
+ 
+    }
+    public ListNode swap(ListNode head){
+        ListNode nextNode=null;
+        if(head!=null&&head.next!=null){
+            nextNode = head.next;
+            head.next = swap(head.next.next==null?null:head.next.next);
+            nextNode.next = head;
+        }else{
+            if(head==null){
+                return null;
+            }
+            if(head.next==null){
+                return head;
+            }
+        }
+        return nextNode;
+    }
+}
+```
+### Solution 1:
+1. recursively find the new head.(head.next do not immediately = head.next.next, because the after node still will be swapped as well.)
+2. function return the new head. and recursively make the head.next = swap(head.next.next).
+3. keep the original "head.next" as nextNode, don't make nextNode.next = head before swap(head.next.next), otherwise, head.next.next will turn to be head itself!
+4. the terminal condition should be separated, if head==null, no consider about head.next.
+
+
+###[Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/)
+#### Answer 1:
+```
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode newHead = head;
+        delete(head);
+        return newHead;
+    }
+    void delete(ListNode head){
+        if(head!=null&&head.next!=null){
+        if(head.next.val == head.val){
+            head.next = head.next.next==null?null:head.next.next;
+            delete(head);
+        }else{
+            delete(head.next);
+        }
+        
+        }
+    }
+}
+```
+#### Solution 1:
+1. a void return recursion function to delete the next duplicated element
+2. if there is a duplicate element, delete the next, and keep do deleting to this head.
+3. else, nothing happen to head, but do delete to head.next.
+
+
+###[Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/description/)
+#### Answer 1:
+```
+class Solution {
+    public ListNode deleteDuplicates(ListNode head){
+        ListNode newHead = head;
+        if(head!=null){
+            if(head.next==null){
+                return newHead;
+            }
+            if(head.next.val!=head.val){
+                newHead.next = deleteDuplicates(head.next);
+                return newHead;
+            }
+            //delete the original head
+            while(head.next!=null&&head.next.val==head.val){
+                head = head.next;
+            }
+            newHead = deleteDuplicates(head.next);
+        }
+        return newHead;
+    } 
+}
+```
+#### Solution 1:
+1. firstly decide whether head and head.next is repeat, if it's not, newHead.next = delete(head.next);
+2. if it is, while loop to keep finding a head.next is not equal with head(head = head.next). Then newHead = delete(head.next);(newHead will be replaced).
+3. terminal condition: if head=null(return null), if head.next=null(return head)
 
