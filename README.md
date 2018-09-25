@@ -523,5 +523,124 @@ class Solution {
 3. Corner case! 
 
 
+### [Valid Parenthese](https://leetcode.com/problems/valid-parentheses/description/)
+#### Answer 1:
+```
+class Solution {
+    Map<Character, Integer> bMap = new HashMap<>();
+    
+    public boolean isValid(String s) {
+        Stack<Character> st = new Stack<>();
+        for(int i = 0;i<s.length();i++){
+            char c = s.charAt(i);
+            if(c =='('||c =='{'||c =='['){
+                st.push(c);
+            }else{
+                if(st.size()>0){
+                    if(!isMatch(st.peek(),c)){
+                        return false;
+                    }else{
+                        st.pop();
+                    }
+                }else{
+                    return false;
+                }
+            }
+        }
+        if(st.size()==0){
+          return true;  
+        }
+        return false;
+        
+    }
+    public boolean isMatch(char a, char b){
+        if(a=='('&&b==')'){
+            return true;
+        }
+        if(a=='['&&b==']'){
+            return true;
+        }
+        if(a=='{'&&b=='}'){
+            return true;
+        }
+        return false;
+        
+    }
+    
+}
+```
+#### Solution 1:
+1. Use stack to match.
+
+
+### [Palindrome Number](https://leetcode.com/problems/palindrome-number/description/)
+#### Answer 1:
+```
+class Solution {
+    public boolean isPalindrome(int x) {
+        Stack<Character> st = new Stack<>();
+        String s = String.valueOf(x);
+        boolean out = false;
+        for(int i = 0;i<s.length();i++){
+            char c = s.charAt(i);
+            if(out){
+                if(c!=st.pop()){
+                    return false;
+                }
+            }else{
+                st.push(c);
+            }
+            if(s.length()%2==0){
+                if(i==s.length()/2-1){
+                    out = true;     
+                }
+            }else{
+                if(i==s.length()/2){
+                    out = true;
+                    st.pop();
+                }
+            }    
+        }
+        return true;
+    }
+}
+```
+
+#### Solution 1:
+1. Use stack to match two parts
+2. If the length is odd, start matching when i = length/2, remember pop out this i before matching.
+3. If the length is even, start matching when i = length/2-1.
+
+
+### First
+#### Answer 1:
+```
+/* The isBadVersion API is defined in the parent class VersionControl.
+      boolean isBadVersion(int version); */
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int l = 1;
+        int r = n;
+        while(l<r){
+            int mid = l+(r-l)/2;
+            if(isBadVersion(mid)){
+                r = mid;
+            }else{
+                l = mid+1;
+            }
+        }
+        return l;
+        
+        
+    }
+}
+```
+#### Solution 1:
+1. binary search O(logN)
+2. the left point can move to mid+1(because mid has already checked is good version)
+3. calculate the mid, need to be careful about exceed the integer limit(2^31). 
+
+#### 	Answer 2:
 
 
