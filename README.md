@@ -769,3 +769,122 @@ class Solution {
 2. if it is, while loop to keep finding a head.next is not equal with head(head = head.next). Then newHead = delete(head.next);(newHead will be replaced).
 3. terminal condition: if head=null(return null), if head.next=null(return head)
 
+
+### Single
+#### Answer:
+```
+public class solution(){
+	public static void main(String[] args){
+		solution s = new solution();
+		System.out.print(s.single());
+	}
+	public int single(List<Integer> a){
+		int sum=0;
+		for(int i:a){
+			sum ^= i;
+		}
+		return sum;
+	}
+}
+```
+
+### NUM1BITS
+#### Answer:
+```
+public class Solution(){
+	public static void main(String[] args){
+		Solution s = new Solution();
+		System.out.print(onebit());
+	}
+	public int onebit(long a){
+		int count = 0;
+		for(int i = 1;i<33;i++){
+			count += a&1;
+			a/=2;
+		}
+		return count;
+	}
+}
+```
+
+### [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/description/)
+#### Answer 1:
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null){
+            return true;
+        }
+        return syme(root.left,root.right);
+    }
+   
+  public boolean syme(TreeNode left, TreeNode right){
+    if(right==null&&left==null){
+      return true;
+    }else if(right==null||left==null){
+      return false;
+    }
+    if(right.val!=left.val){
+      return false;
+    }
+    if(!syme(left.right,right.left)||!syme(left.left,right.right)){
+      return false;
+    }
+    return true;
+  }
+}
+```
+#### Solution 1:
+1. use recursion to find that one's right is equal to another's left.
+2. careful about the null root, and one child is null.
+
+### [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/description/)
+#### Answer 1:
+```
+class Solution {
+    public int countSubstrings(String s) {
+        int count = 0;
+        for(int i = 0;i<s.length();i++){
+            count++;
+            int j=1;
+            if(i+1<s.length()&&s.charAt(i+1)==s.charAt(i)){
+                count++;
+                while(i-j>=0&&i+1+j<s.length()){
+                if(s.charAt(i-j)==s.charAt(i+1+j)){
+                    count++;   
+                }else{
+                    break;
+                }
+                    j++;
+                }
+            }
+            j = 1;
+            while(i-j>=0&&i+j<s.length()){
+                if(s.charAt(i-j)==s.charAt(i+j)){
+                    count++;   
+                }else{
+                    break;
+                }
+                j++;
+            }
+        }
+    return count;  
+    }
+}
+```
+#### Solution 1:
+1. for every i, set the half range j, find if two sides are equal.
+2. for every pair of equal s(i) and s(i+1), also set the range j to find two sides for them.('aa' is also Palindromic Substrings)
+3. if two sides are not equal, need to break!!!
+
+
+
