@@ -45,6 +45,24 @@ class Solution {
 4. Think this Roman string as a bunch of climbing numbers connected part by part, which means in each part, the pre char is smaller than the next char. And finally add up each part, this can be tracked by a "sum".
 5. Don't forget to add the last part into sum when the loop finished!
 
+### [Integer to Roman](https://leetcode.com/problems/integer-to-roman/description/)
+#### Answer 1:
+```
+class Solution {
+    public String intToRoman(int num) {
+        String[] I = {"","I","II","III","IV","V","VI","VII","VIII","IX"};
+        String[] X = {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"};
+        String[] C = {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"};
+        String[] M = {"","M","MM","MMM"};
+        return(M[(num/1000)%10]+C[(num/100)%10]+X[(num/10)%10]+I[num%10]);
+        
+    }
+}
+```
+#### Solution 1:
+1. set up each permulation
+2. module the num to get each part's representation of Roman char.
+
 ### [Max Substring](https://github.com/Blankj/awesome-java-leetcode/blob/master/note/053/README.md)
 #### Answer 1:
 
@@ -886,5 +904,94 @@ class Solution {
 2. for every pair of equal s(i) and s(i+1), also set the range j to find two sides for them.('aa' is also Palindromic Substrings)
 3. if two sides are not equal, need to break!!!
 
+### [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
+#### Answer 1:
+```
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int maxLength = 0;
+        int count = 0;
+        String temp = "";
+        
+        for(int i = 0;i<s.length();i++){
+            String a = String.valueOf(s.charAt(i));
+            if(!temp.contains(a)){
+                temp+=a;
+                count = temp.length();
+                maxLength = Math.max(count, maxLength);
+            }else{
+                temp+=a;
+                int end=temp.indexOf(s.charAt(i))+1;
+                temp = temp.substring(end);
+                count = temp.length();   
+            }
+        }
+        return maxLength;
+    }
+}
+```
+#### Solution 1:
+1. string has contains(), indextOf(), substring(), contains() needs a String instead of Character.
+2. find the first occurred repeating one's index j, substring from j+1;
+3. max the count;
 
+### [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
+#### Answer 1:
+```
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if(nums.length==0){
+           return 0; 
+        }
+        int pre = nums[0];
+        int ind = 0;
+        int count = 1;
+        for(int i = 1;i<nums.length;i++){
+            if(nums[i]==pre){
+                continue;  
+            }else{
+                count++;
+                nums[ind+1] = nums[i];
+                pre = nums[i];
+                ind = ind+1;
+            }
+        }
+        return count;
+    }
+}
+```
+#### Solution 1:
+1. just replace the next repeating element with a new not repeating element.
+2. Corner case! empty array!!!!!!!!!!
+
+
+### [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/description/)
+#### Answer:
+```
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+      
+    //boundary check
+    if(headA == null || headB == null) return null;
+    
+    ListNode a = headA;
+    ListNode b = headB;
+    
+    //if a & b have different len, then we will stop the loop after second iteration
+    while( a != b){
+    	//for the end of first iteration, we just reset the pointer to the head of another linkedlist
+        a = a == null? headB : a.next;
+        b = b == null? headA : b.next;    
+    }
+    
+    return a;
+
+    }
+}
+```
+#### Solution:
+1. two list's diff can be fixed (end to here)on the longer one in first iteration of the shorter one.
+2. find the longer one's number diff 's node by moving the fixed one to the end, and head follows.
+3. Now iterate together from the longer list' number diff node and the head of the shorter list, the common node must occur.
+4. if the diff is 0, first iteration can find the common one.
 
